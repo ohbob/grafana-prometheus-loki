@@ -6,10 +6,17 @@ services:
     image: grafana/grafana:latest
     user: ${USER_ID}
     volumes:
-      - ./config/grafana:/var/lin/grafana
+      - ./config/grafana:/var/lib/grafana
+      - ./config/grafana/provisioning:/etc/grafana/provisioning
+      - ./config/grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_INSTALL_PLUGINS=
     ports:
       - "3000:3000"
     restart: unless-stopped
+    depends_on:
+      - loki
+      - prometheus
     networks:
       - loki
     
